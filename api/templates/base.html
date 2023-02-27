@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    
+    <nav>
+        <div class="nav-wrapper teal lighten-2">
+          <a href="/" class="brand-logo " style="padding-left: 10px">Crypto</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+        
+            {% if user.is_authenticated %}
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard/">Dashboard</a></li>
+                <li><a href="/portfolio/">Portfolio</a></li>
+                <li><a href="/signout/">Logout</a></li>
+            {% else %}
+                <li><a href="/">Home</a></li>
+                <li><a href="/signIn/">Sign In</a></li>
+                <li><a href="/logIn/">Login</a></li>
+            {% endif %}
+
+          </ul>
+        </div>
+      </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

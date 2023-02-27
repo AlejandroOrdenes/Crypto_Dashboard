@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block content %}
+
+<body style="background-color: rgb(51, 51, 51)">
+  <div class="row s3">
+    <form action="/dashboard/" method="POST">
+        {% csrf_token %}
+        <div class="col s12">
+            <h6 style="padding-left: 10px; color: white; text-align: center">
+              DashBoard
+            </h6>
+            <div class="input-field col s3" style="display: flex;
+            width: 40%;">
+              <input
+                class="white-text"
+                id="username"
+                type="text"
+                name="searchCripto"
+                style="margin-right: 11%;
+                width: 40%;"
+              />
+              <label for="icon_prefix2">Search Cripto</label>
+              <button
+                class="btn waves-effect waves-light"
+                type="submit"
+                name="action"
+              >
+                Search
+              </button>
+            </div>
+          </div>
+    </form>
+  </div>
+  <div style="display: flex; justify-content: center">
+    <table class="striped white-text" style="width: 70%">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Current Price</th>
+          <th>Market Cap.</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      {% for d in data %}
+        <tr>
+          <td style="padding: 6px;">
+            <img style="width: 15%;" src={{ d.image }} alt="">
+          </td>
+          <td>{{ d.name }}</td>
+          <td>{{ d.current_price }}</td>
+          <td>{{ d.market_cap }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+
+{% endblock %}
