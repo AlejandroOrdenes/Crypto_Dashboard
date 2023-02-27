@@ -30,27 +30,30 @@
           </div>
     </form>
   </div>
-  <div style="display: flex; justify-content: center">
-    <table class="striped white-text" style="width: 70%">
-      <thead>
-        <tr>
-          <th>Image</th>
-          <th>Name</th>
-          <th>Current Price</th>
-          <th>Market Cap.</th>
-        </tr>
-      </thead>
-      <tbody>
-        
+  <div style="display: flex;
+  flex-flow: wrap;">
       {% for d in data %}
-        <tr>
-          <td style="padding: 6px;">
-            <img style="width: 15%;" src={{ d.image }} alt="">
-          </td>
-          <td>{{ d.name }}</td>
-          <td>{{ d.current_price }}</td>
-          <td>{{ d.market_cap }}</td>
-        </tr>
+      <div class="row">
+        <div class="col s12 m10">
+          <div class="card" style="    background-color: #181818;
+          color: white;">
+            <div class="card-image" style="align-items: center;
+            display: flex;
+            justify-content: center;">
+              <img style="width: 60%; padding: 5%;" src={{ d.image }}>
+            </div>
+            
+            <div style="justify-content: center;
+            display: flex;" class="card-content">
+              <p>Price: {{ d.current_price }}</p>
+            </div>
+            <div style="    background-color: #0e0e0e;" class="card-action">
+              <span style="justify-content: center;
+            display: flex;" class="card-title">{{ d.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       {% endfor %}
       </tbody>
     </table>
