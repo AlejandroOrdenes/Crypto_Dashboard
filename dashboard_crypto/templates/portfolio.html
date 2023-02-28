@@ -1,9 +1,66 @@
-{% extends 'base.html' %}
+{% extends 'navbar.html' %}
 
 
 {% block content %}
 <body style="background-color: rgb(51, 51, 51);">
     <h6 style="color: white; text-align: center;">Portfolio</h6> 
+    <div style="margin-top: 3%;" class="row s3">
+        <form action="/searchCrypto/" method="POST">
+            {% csrf_token %}
+            <div style="padding-left: 3%;" class="col s12">
+                <div class="input-field col s3" style="display: flex;
+                width: 40%;">
+                  <input
+                    class="white-text"
+                    id="search"
+                    type="text"
+                    name="searchCripto"
+                    style="margin-right: 11%;
+                    width: 40%;"
+                  />
+                  <label for="icon_prefix2">Search Cripto</label>
+                  <button
+                    class="btn waves-effect waves-light"
+                    type="submit"
+                    name="action"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div style="display: flex;
+            justify-content: center;">
+                <table class="striped white-text" style="width: 80%">
+                    <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Item Name</th>
+                          <th>Item Price</th>
+                      </tr>
+                    </thead>
+            
+                    <tbody>
+                      <tr>
+                        <td>Alvin</td>
+                        <td>Eclair</td>
+                        <td>$0.87</td>
+                      </tr>
+                      <tr>
+                        <td>Alan</td>
+                        <td>Jellybean</td>
+                        <td>$3.76</td>
+                      </tr>
+                      <tr>
+                        <td>Jonathan</td>
+                        <td>Lollipop</td>
+                        <td>$7.00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </form>
+      
 </body>
 
 {% endblock %}

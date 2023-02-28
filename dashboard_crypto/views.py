@@ -98,19 +98,22 @@ def searchCrypto(request):
         f"https://api.coingecko.com/api/v3/search?query={dataCrypto}"
     )
 
-    # Si la petición fue exitosa, devolvemos los datos en formato JSON
-    if response2.status_code == 200 and response.status_code == 200:
-        cryptos = response.json()
-        cryptos2 = response2.json()
-        print(cryptos2)
-        cryptos_found = []
-        for id in cryptos2["coins"]:
-            for id2 in cryptos:
-                if id["symbol"].lower() in id2["symbol"].lower():
-                    cryptos_found.append(id2)
+    cryptos = response.json()
+    cryptos2 = response2.json()
 
-        return render(request, "dashboard.html", {"data": cryptos_found})
-
+    if dataCrypto == '':
+        return render(request, "dashboard.html")
     else:
-        # Si la petición no fue exitosa, devolvemos un mensaje de error
-        return JsonResponse({"error": "Error to get data"}, status=response.status_code)
+        # Si la petición fue exitosa, devolvemos los datos en formato JSON
+        if response2.status_code == 200 and response.status_code == 200:
+            cryptos_found = []
+            for id in cryptos2["coins"]:
+                for id2 in cryptos:
+                    if id["symbol"].lower() in id2["symbol"].lower():
+                        cryptos_found.append(id2)
+
+            return render(request, "dashboard.html", {"data": cryptos_found})
+
+        else:
+            # Si la petición no fue exitosa, devolvemos un mensaje de error
+            return JsonResponse({"error": "Error to get data"}, status=response.status_code)
