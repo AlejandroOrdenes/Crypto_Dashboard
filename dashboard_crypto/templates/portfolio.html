@@ -7,16 +7,16 @@
     <div style="margin-top: 3%;" class="row s3">
         <form action="/searchCrypto/" method="POST">
             {% csrf_token %}
-            <div style="padding-left: 3%;" class="col s12">
+            <div style="padding-left: 3%; display: flex; align-items: center;" class="col s12">
                 <div class="input-field col s3" style="display: flex;
-                width: 40%;">
+                width: 40%; align-items: center;">
                   <input
                     class="white-text"
                     id="search"
                     type="text"
                     name="searchCripto"
                     style="margin-right: 11%;
-                    width: 40%;"
+                width: 40%;"
                   />
                   <label for="icon_prefix2">Search Cripto</label>
                   <button
@@ -25,6 +25,16 @@
                     name="action"
                   >
                     Search
+                  </button>
+                </div>
+                <div style="display: flex; justify-content: flex-end; width: 100%;">
+                    <button
+                    class="btn waves-effect waves-light"
+                    type="submit"
+                    name="action"
+                    style="float: right;"
+                  >
+                    Add Coin
                   </button>
                 </div>
               </div>

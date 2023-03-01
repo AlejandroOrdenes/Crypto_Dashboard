@@ -1,12 +1,13 @@
-{% extends 'navbar.html' %} {% block content %}
+{% extends 'navbar.html' %} {% block content %} 
 
 <body style="background-color: rgb(51, 51, 51)">
+  <h6 style="color: white; text-align: center;">Portfolio</h6> 
   <div style="margin-top: 3%;" class="row s3">
     <form action="/searchCrypto/" method="POST">
         {% csrf_token %}
         <div style="padding-left: 3%;" class="col s12">
             <div class="input-field col s3" style="display: flex;
-            width: 40%;">
+            width: 40%; align-items: center;">
               <input
                 class="white-text"
                 id="search"
@@ -24,6 +25,8 @@
                 Search
               </button>
             </div>
+            <h5 style="color: white
+    ;">{{ error }}</h5>
           </div>
     </form>
   </div>
@@ -35,27 +38,28 @@
           <a href="">
             <div class="card shadow z-depth-5" style=" background-color: #181818;
               color: rgb(194, 193, 193); border-radius: 8px;">
-              
-                <i href="/logIn/" class="material-icons" style="padding-right: 4%;
-                padding-top: 4%;
-                display: flex;
-                justify-content: end;">add_circle</i>
-                
+              <div style="display: flex; justify-content: flex-end;">
+                {% if user.is_authenticated %}
+                <span id="addCrypto" class="material-icons">add_circle</span>
+                {% else %}
+                <span style="height: 20px;"></span>
+                {% endif %}
+              </div>
               
               <div class="card-image" style="align-items: center;
               display: flex;
               justify-content: center;">
                 <img style="width: 60%; padding: 5%;" src={{ d.image }}>
               </div>
-            
+              <p class="price">$ {{ d.current_price }}</p>
               <div style="justify-content: center;
-              display: flex; flex-direction: column;" class="card-content">
-                <p>Name: {{ d.name }}</p>
-                <p>Price: {{ d.current_price }}</p> 
+              display: flex; flex-direction: column; padding-top: 5%;" class="card-content">
+                <p style="text-align: center;">{{ d.name }}</p>
+ 
               </div>
               <div style=" background-color: #0e0e0e; border-radius: 8px;" class="card-action">
                 <span style="justify-content: center;
-                display: flex;" class="card-title">{{ d.symbol }}</span>
+                display: flex; font-weight: 500;" class="card-title">{{ d.symbol }}</span>
               </div>
             </div>
           </a>
