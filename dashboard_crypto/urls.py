@@ -9,4 +9,5 @@ urlpatterns = [
     path("dashboard/", views.dashboardCrypto, name="dashboard"),
     path("portfolio/", views.portfolio, name="portfolio"),
     path("searchCrypto/", views.searchCrypto, name="search"),
+    path("newPortfolio/", views.newPortfolio, name="newPortfolio"),
 ]

@@ -31,7 +31,7 @@
                 <li><a href="/signout/">Logout</a></li>
             {% else %}
                 <li><a href="/dashboard/">Dashboard</a></li>
-                <li><a href="/portfolio/">Portfolio</a></li>
+                <li><a href="/logIn/">Portfolio</a></li>
                 <li><a href="/logIn/">Login</a></li>
                 <li><a href="/signIn/">Sign In</a></li>
             {% endif %}
@@ -41,5 +41,6 @@
       </nav>
     {% block content %}
     {% endblock %}
+    {% include 'modalPortfolio.html' %}
 </body>
 </html>

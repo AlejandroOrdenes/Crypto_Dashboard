@@ -87,6 +87,9 @@ def dashboardCrypto(request):
 def portfolio(request):
     return render(request, "portfolio.html")
 
+def newPortfolio(request):
+    return render(request, "portfolio.html")
+
 
 def searchCrypto(request):
     dataCrypto = request.POST.get("searchCripto")
@@ -99,7 +102,9 @@ def searchCrypto(request):
     )
     cryptos_found = []
     if dataCrypto == '':
-        return render(request, "dashboard.html")
+        return render(
+                    request, "dashboard.html", {"error": "Not data found!"}
+                )
     else:
         # Si la petición fue exitosa, devolvemos los datos en formato JSON
         if response2.status_code == 200 and response.status_code == 200:
