@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 class Crypto(models.Model):
     name = models.CharField(max_length=255, unique=True)
     symbol = models.CharField(max_length=10, unique=True)
+    cryptoAmount = models.DecimalField(max_digits=20, decimal_places=10)
 
 class Portfolio(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

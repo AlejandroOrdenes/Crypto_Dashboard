@@ -1,20 +1,97 @@
 {% extends 'navbar.html' %} {% block content %}
 <body style="background-color: rgb(51, 51, 51)">
-  <h6 style="color: white; text-align: center">Portfolio</h6>
-  <div style="padding-left: 4%; padding-right: 4%;">
-    <div style="display: flex; justify-content: start; width: 100%">
-      <button
-        class="waves-effect waves-light btn modal-trigger" 
-        href="#loginModal"
-        type="submit"
-        name="action"
+  <div style="padding-left: 4%;padding-right: 4%;">
+    <h6 style="color: white; text-align: center">Portfolio</h6>
+    
+      <div style="display: flex; justify-content: start; width: 100%; padding-bottom: 2%; ">
+        <button
+          class="waves-effect waves-light btn modal-trigger" 
+          href="#loginModal"
+          type="submit"
+          name="action"
+          
+        >
+          New Portfolio
+        </button>
+      </div>
+
+  
+    <!-- All Portfolios -->
+  
+      <div class="row">
+        <div class="col s12 m2" style="padding: 0;">
+          <div class="card shadow z-depth-5" style="background-color: #181818; border-radius: 8px;">
+            <div class="card-content grey-text" style="padding: 4%;">
+              <span class="card-title">New Portfolio</span>
+              <h5 style="color: white;">$ 2.800</h5>
+              <p>Total Balance</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    <!-- Portfolio Info -->
+    <div>
+      <table class="highlight white-text">
+        <div style="display: flex;align-items: center; justify-content: space-between;">
+          <h4 style="color: white;">Name Portfolio</h4>
+          <button
+          class="waves-effect waves-light btn modal-trigger" 
+          href="#loginModal"
+          type="submit"
+          name="action"
+          
+        >
+          Add Coin
+        </button>
+        </div>
         
-      >
-        New Portfolio
-      </button>
+        <thead>
+          <tr>
+              <th>#</th>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>Mkt Cap</th>
+              <th>Holdings</th>
+              <th>PNL</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Alvin</td>
+            <td>Eclair</td>
+            <td>$0.87</td>
+            <td>$12.326.343</td>
+            <td>$1.303</td>
+            <td>$1.303</td>
+          </tr>
+          <tr>
+            <td>Alan</td>
+            <td>Jellybean</td>
+            <td>$3.76</td>
+            <td>$12.326.343</td>
+            <td>$1.303</td>
+            <td>$1.303</td>
+          </tr>
+          <tr>
+            <td>Jonathan</td>
+            <td>Lollipop</td>
+            <td>$7.00</td>
+            <td>$12.326.343</td>
+            <td>$1.303</td>
+            <td>$1.303</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  
   </div>
+  
+
 </body>
 {% endblock %}
+
+
 
 
