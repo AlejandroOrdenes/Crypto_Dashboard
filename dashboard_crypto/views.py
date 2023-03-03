@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
+from .models import Portfolio
 
 from django.http import JsonResponse
 
@@ -49,7 +50,7 @@ def signIn(request):
                 )
                 user.save()
                 login(request, user)
-                return redirect("home")
+                return redirect("dashboard")
             except IntegrityError as err:
                 print(err)
                 return render(
@@ -83,12 +84,54 @@ def dashboardCrypto(request):
         # Si la petición no fue exitosa, devolvemos un mensaje de error
         return JsonResponse({"error": "Error to get data"}, status=response.status_code)
 
-
 def portfolio(request):
-    return render(request, "portfolio.html")
+    userId = request.user.id
+    portafolios = getPortafolioByUserId(userId)
+    print(portafolios)
+    if not portafolios.exists():
+        print('vacio')
+        return render(request, "portfolio.html", {'error': 'You Dont have Portfolios!'})
+    else:
+        return render(request, "portfolio.html", {'data': portafolios})
+    
 
 def newPortfolio(request):
-    return render(request, "portfolio.html")
+    if request.method == "GET":
+        return render(request, "portfolio.html")
+    else:
+        portfolioName = request.POST.get('portfolioName')
+        userId = request.user.id
+        print("Creando nuevo portfolio!!!")
+        nuevoPortfolio = Portfolio(user=request.user, name=portfolioName)
+        nuevoPortfolio.save()
+
+        portafolios = getPortafolioByUserId(userId)
+        print(portafolios)
+        return render(request, "portfolio.html", {'data': portafolios})
+    
+def deletePortfolio(request, portfolioId):
+        portById = Portfolio.objects.get(id=portfolioId)
+        userId = request.user.id
+        print("Eliminando portfolio!!!")
+        print(portById)
+        portById.delete()
+
+        portafolios = getPortafolioByUserId(userId)
+        if not portafolios.exists():
+            print('vacio')
+            return render(request, "portfolio.html", {'error': 'You Dont have Portfolios!'})
+        else:
+            return render(request, "portfolio.html", {'data': portafolios})
+       
+def getPortafolioByUserId(userId):
+    portafolio = Portfolio.objects.filter(user_id=userId)
+    return portafolio
+
+def createTable(request, portfolioId):
+    portfolio = getPortafolioByUserId(request.user.id)
+    portafolio = Portfolio.objects.filter(id=portfolioId)
+    return render(request, "portfolio.html", {'portfolios': portafolio, 'data': portfolio})
+            
 
 
 def searchCrypto(request):

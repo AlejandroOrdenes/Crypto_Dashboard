@@ -1,60 +1,90 @@
 {% extends 'navbar.html' %} {% block content %}
 <body style="background-color: rgb(51, 51, 51)">
-  <div style="padding-left: 4%;padding-right: 4%;">
+  <div style="padding-left: 4%; padding-right: 4%;">
     <h6 style="color: white; text-align: center">Portfolio</h6>
-    
-      <div style="display: flex; justify-content: start; width: 100%; padding-bottom: 2%; ">
-        <button
-          class="waves-effect waves-light btn modal-trigger" 
-          href="#loginModal"
-          type="submit"
-          name="action"
-          
-        >
-          New Portfolio
-        </button>
-      </div>
 
-  
+    <div
+      style="
+        display: flex;
+        justify-content: start;
+        width: 100%;
+        padding-bottom: 2%;
+      "
+    >
+      <button
+        class="waves-effect waves-light btn modal-trigger"
+        href="#loginModal"
+        type="submit"
+        name="action"
+      >
+        New Portfolio
+      </button>
+    </div>
+
     <!-- All Portfolios -->
-  
-      <div class="row">
-        <div class="col s12 m2" style="padding: 0;">
-          <div class="card shadow z-depth-5" style="background-color: #181818; border-radius: 8px;">
-            <div class="card-content grey-text" style="padding: 4%;">
-              <span class="card-title">New Portfolio</span>
-              <h5 style="color: white;">$ 2.800</h5>
-              <p>Total Balance</p>
+    <div style="display: flex; flex-flow: wrap; column-gap: 2%">
+      {% if error %}
+        <h4 style="color: rgb(170, 164, 164);">{{ error }}</h4>
+      {% endif%}
+      {% for d in data %}
+      <div class="col s12 m3" style="padding: 0; width: 15%; min-width: 15%">
+          <div
+            class="card shadow z-depth-5"
+            style="background-color: #181818; border-radius: 8px"
+          >
+            <div class="card-content grey-text" style="padding: 4%">
+              <div style="display: flex; justify-content: flex-end">
+                <i
+                  class="material-icons"
+                  style="font-size: 1.5vw"
+                  ><a class="grey-text" href="{% url 'deletePortfolio' d.id %}">clear</a></i
+                >
+              </div>
+              <a class="grey-text" href="{% url 'createTable' d.id %}">
+                <span class="card-title">{{ d.name}}</span>
+                <h5 style="color: white">${{ d.totalBalance }}</h5>
+                <p>Total Balance</p>
+              </a>
+              
             </div>
           </div>
-        </div>
-      </div>
-  
-    <!-- Portfolio Info -->
-    <div>
-      <table class="highlight white-text">
-        <div style="display: flex;align-items: center; justify-content: space-between;">
-          <h4 style="color: white;">Name Portfolio</h4>
-          <button
-          class="waves-effect waves-light btn modal-trigger" 
-          href="#loginModal"
-          type="submit"
-          name="action"
-          
-        >
-          Add Coin
-        </button>
-        </div>
         
+      </div>
+
+      {% endfor %}
+    </div>
+
+    <!-- Portfolio Info -->
+  
+    <h5 style="color: rgb(170, 164, 164); height: 8vh;">Portfolio: </h5>
+    {% for p in portfolios %}
+    <div style="height: 100vh;">
+      <table class="highlight white-text">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          "
+        >
+          <h4 style="color: white">{{ p.name }}</h4>
+          <button
+            class="waves-effect waves-light btn modal-trigger"
+            href="#addCoinModal"
+            type="submit"
+            name="action"
+          >
+            Add Coin
+          </button>
+        </div>
         <thead>
           <tr>
-              <th>#</th>
-              <th>Coin</th>
-              <th>Price</th>
-              <th>Mkt Cap</th>
-              <th>Holdings</th>
-              <th>PNL</th>
-
+            <th>#</th>
+            <th>Coin</th>
+            <th>Price</th>
+            <th>Mkt Cap</th>
+            <th>Holdings</th>
+            <th>PNL</th>
           </tr>
         </thead>
         <tbody>
@@ -85,13 +115,7 @@
         </tbody>
       </table>
     </div>
-  
+    {% endfor %}
   </div>
-  
-
 </body>
 {% endblock %}
-
-
-
-

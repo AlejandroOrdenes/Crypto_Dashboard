@@ -1,3 +1,12 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+main {
+    flex: 1 0 auto;
+  }
 #cardCrypto:hover {
     background-color: aqua;
 }
@@ -9,6 +18,14 @@
 
 #addCrypto:hover {
     color: rgb(107, 214, 81);
+}
+
+#deletePortfolio {
+    font-size: 4%;
+}
+
+#deletePortfolio:hover {
+    color: rgb(214, 81, 81);
 }
 
 .price {

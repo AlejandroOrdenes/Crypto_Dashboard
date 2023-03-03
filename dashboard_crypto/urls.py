@@ -10,4 +10,6 @@ urlpatterns = [
     path("portfolio/", views.portfolio, name="portfolio"),
     path("searchCrypto/", views.searchCrypto, name="search"),
     path("newPortfolio/", views.newPortfolio, name="newPortfolio"),
+    path("deletePortfolio/<int:portfolioId>", views.deletePortfolio, name='deletePortfolio'),
+    path("createTable/<int:portfolioId>", views.createTable, name='createTable'),
 ]

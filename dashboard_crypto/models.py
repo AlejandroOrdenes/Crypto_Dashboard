@@ -2,14 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-class Crypto(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    symbol = models.CharField(max_length=10, unique=True)
-    cryptoAmount = models.DecimalField(max_digits=20, decimal_places=10)
 
 class Portfolio(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    crypto = models.ForeignKey(Crypto, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=20, decimal_places=10)
+    name = models.TextField(blank=False, null=False, default='Portfolio')
+    crypto = models.TextField(blank=True, null=True)
+    totalBalance = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
