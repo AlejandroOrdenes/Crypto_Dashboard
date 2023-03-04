@@ -29,6 +29,10 @@
                 <li><a href="/dashboard/">Dashboard</a></li>
                 <li><a href="/portfolio/">Portfolio</a></li>
                 <li><a href="/signout/">Logout</a></li>
+                <li><p style="margin: 0; padding-left: 4%;">{{user.username}}</p></li>
+                <li style="    padding-top: 2%;"><span class="material-icons">
+                  account_circle
+                  </span></li>
             {% else %}
                 <li><a href="/dashboard/">Dashboard</a></li>
                 <li><a href="/logIn/">Portfolio</a></li>
@@ -43,8 +47,9 @@
     {% block content %}
     {% endblock %}
     {% include 'modalPortfolio.html' %}
-    {% include 'modalAddCoin.html' %}
-    <footer class="page-footer teal" style="margin-top: 8%;
+    
+    <footer class="teal" style="color: white;
+    padding: 1%;;
     position: fixed;
     bottom: 0;
     width: 100%; ">

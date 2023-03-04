@@ -1,6 +1,7 @@
-{% extends 'navbar.html' %} {% block content %}
+
+{% extends 'navbar.html' %}{% load static %} {% block content %}
 <body style="background-color: rgb(51, 51, 51)">
-  <div style="padding-left: 4%; padding-right: 4%;">
+  <div style="padding-left: 4%; padding-right: 4%">
     <h6 style="color: white; text-align: center">Portfolio</h6>
 
     <div
@@ -24,41 +25,38 @@
     <!-- All Portfolios -->
     <div style="display: flex; flex-flow: wrap; column-gap: 2%">
       {% if error %}
-        <h4 style="color: rgb(170, 164, 164);">{{ error }}</h4>
-      {% endif%}
-      {% for d in data %}
+      <h4 style="color: rgb(170, 164, 164)">{{ error }}</h4>
+      {% endif%} {% for d in data %}
       <div class="col s12 m3" style="padding: 0; width: 15%; min-width: 15%">
-          <div
-            class="card shadow z-depth-5"
-            style="background-color: #181818; border-radius: 8px"
-          >
-            <div class="card-content grey-text" style="padding: 4%">
-              <div style="display: flex; justify-content: flex-end">
-                <i
-                  class="material-icons"
-                  style="font-size: 1.5vw"
-                  ><a class="grey-text" href="{% url 'deletePortfolio' d.id %}">clear</a></i
-                >
-              </div>
-              <a class="grey-text" href="{% url 'createTable' d.id %}">
-                <span class="card-title">{{ d.name}}</span>
-                <h5 style="color: white">${{ d.totalBalance }}</h5>
-                <p>Total Balance</p>
-              </a>
-              
+        <div
+          class="card shadow z-depth-5"
+          style="background-color: #181818; border-radius: 8px"
+        >
+          <div class="card-content grey-text" style="padding: 4%">
+            <div style="display: flex; justify-content: flex-end">
+              <i class="material-icons" style="font-size: 1.5vw"
+                ><a class="grey-text" href="{% url 'deletePortfolio' d.id %}"
+                  >clear</a
+                ></i
+              >
             </div>
+            <a class="grey-text" href="{% url 'createTable' d.id %}">
+              <span class="card-title">{{ d.name}}</span>
+              <h5 style="color: white">${{ d.totalBalance }}</h5>
+              <p>Total Balance</p>
+            </a>
           </div>
-        
+        </div>
       </div>
 
       {% endfor %}
     </div>
 
     <!-- Portfolio Info -->
-  
-    <h5 style="color: rgb(170, 164, 164); height: 8vh;">Portfolio: </h5>
+
+    <h5 style="color: rgb(170, 164, 164); height: 8vh">Portfolio:</h5>
     {% for p in portfolios %}
-    <div style="height: 100vh;">
+    <div style="height: 100vh">
       <table class="highlight white-text">
         <div
           style="
@@ -68,14 +66,14 @@
           "
         >
           <h4 style="color: white">{{ p.name }}</h4>
-          <button
-            class="waves-effect waves-light btn modal-trigger"
-            href="#addCoinModal"
-            type="submit"
-            name="action"
-          >
-            Add Coin
-          </button>
+            <button
+              class="waves-effect waves-light btn modal-trigger"
+              href="#addCoinModal"
+              type="submit"
+              name="action"
+            >
+              Add Coin
+            </button>
         </div>
         <thead>
           <tr>
@@ -87,35 +85,12 @@
             <th>PNL</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Alvin</td>
-            <td>Eclair</td>
-            <td>$0.87</td>
-            <td>$12.326.343</td>
-            <td>$1.303</td>
-            <td>$1.303</td>
-          </tr>
-          <tr>
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>$12.326.343</td>
-            <td>$1.303</td>
-            <td>$1.303</td>
-          </tr>
-          <tr>
-            <td>Jonathan</td>
-            <td>Lollipop</td>
-            <td>$7.00</td>
-            <td>$12.326.343</td>
-            <td>$1.303</td>
-            <td>$1.303</td>
-          </tr>
-        </tbody>
       </table>
     </div>
+    {% include 'modalAddCoin.html' %}
     {% endfor %}
   </div>
 </body>
+
 {% endblock %}
+

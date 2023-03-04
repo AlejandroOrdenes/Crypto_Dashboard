@@ -132,7 +132,17 @@ def createTable(request, portfolioId):
     portafolio = Portfolio.objects.filter(id=portfolioId)
     return render(request, "portfolio.html", {'portfolios': portafolio, 'data': portfolio})
             
-
+def searchOnModal(request):
+        print("JHVKJVH")
+        response = requests.get(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=999999&page=1&sparkline=false"
+        )
+        if response.status_code == 200:
+            print("DATAAAA")
+            cryptos = response.json()
+            return JsonResponse(cryptos, safe=False)
+        else:
+            pass
 
 def searchCrypto(request):
     dataCrypto = request.POST.get("searchCripto")
@@ -169,3 +179,8 @@ def searchCrypto(request):
         else:
             # Si la petición no fue exitosa, devolvemos un mensaje de error
             return JsonResponse({"error": "Error to get data"}, status=response.status_code)
+
+
+def addCrypto(request):
+    print("Adding crypto")
+    return HttpResponse("ADDING CRYPTO!!")
