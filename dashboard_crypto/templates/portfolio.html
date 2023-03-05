@@ -1,23 +1,16 @@
-
 {% extends 'navbar.html' %}{% load static %} {% block content %}
-<body style="background-color: rgb(51, 51, 51)">
+
+<body style="background-color: rgb(51, 51, 51); padding-bottom: 5%;">
   <div style="padding-left: 4%; padding-right: 4%">
     <h6 style="color: white; text-align: center">Portfolio</h6>
 
-    <div
-      style="
+    <div style="
         display: flex;
         justify-content: start;
         width: 100%;
         padding-bottom: 2%;
-      "
-    >
-      <button
-        class="waves-effect waves-light btn modal-trigger"
-        href="#loginModal"
-        type="submit"
-        name="action"
-      >
+      ">
+      <button class="waves-effect waves-light btn modal-trigger" href="#loginModal" type="submit" name="action">
         New Portfolio
       </button>
     </div>
@@ -28,27 +21,20 @@
       <h4 style="color: rgb(170, 164, 164)">{{ error }}</h4>
       {% endif%} {% for d in data %}
       <div class="col s12 m3" style="padding: 0; width: 15%; min-width: 15%">
-        <div
-          class="card shadow z-depth-5"
-          style="background-color: #181818; border-radius: 8px"
-        >
+        <div class="card shadow z-depth-5" style="background-color: #181818; border-radius: 8px">
           <div class="card-content grey-text" style="padding: 4%">
             <div style="display: flex; justify-content: flex-end">
-              <i class="material-icons" style="font-size: 1.5vw"
-                ><a class="grey-text" href="{% url 'deletePortfolio' d.id %}"
-                  >clear</a
-                ></i
-              >
+              <i class="material-icons" style="font-size: 1.5vw"><a class="grey-text"
+                  href="{% url 'deletePortfolio' d.id %}">clear</a></i>
             </div>
             <a class="grey-text" href="{% url 'createTable' d.id %}">
-              <span class="card-title">{{ d.name}}</span>
+              <span class="card-title">{{ d.name }}</span>
               <h5 style="color: white">${{ d.totalBalance }}</h5>
               <p>Total Balance</p>
             </a>
           </div>
         </div>
       </div>
-
       {% endfor %}
     </div>
 
@@ -56,41 +42,100 @@
 
     <h5 style="color: rgb(170, 164, 164); height: 8vh">Portfolio:</h5>
     {% for p in portfolios %}
-    <div style="height: 100vh">
-      <table class="highlight white-text">
-        <div
-          style="
+    <div style="height: 100%">
+      <table class="white-text">
+        <div style="
             display: flex;
             align-items: center;
             justify-content: space-between;
-          "
-        >
+          ">
           <h4 style="color: white">{{ p.name }}</h4>
-            <button
-              class="waves-effect waves-light btn modal-trigger"
-              href="#addCoinModal"
-              type="submit"
-              name="action"
-            >
-              Add Coin
-            </button>
+          <button class="waves-effect waves-light btn modal-trigger" href="#addCoinModal" type="button" >
+            Add Coin
+          </button>
         </div>
         <thead>
           <tr>
             <th>#</th>
-            <th>Coin</th>
+            <th style="width: 19%;">Coin</th>
             <th>Price</th>
             <th>Mkt Cap</th>
             <th>Holdings</th>
             <th>PNL</th>
+
           </tr>
         </thead>
+        <tbody>
+          {% for r in data2 %}
+
+          <tr>
+            <td style="margin-right: 3%;">{{ r.market_cap_rank }}</td>
+            <td style="display: flex; align-items: center;"><img style="width: 12%; margin-right: 5%;"
+                src="{{ r.image }}" alt="">{{ r.symbol }}</td>
+            <td>${{ r.current_price}}</td>
+            <td>${{ r.market_cap}}</td>
+            <td>$0.00</td>
+            <td>$0.00</td>
+            <td>
+              <div style="display: flex; justify-content: flex-end">
+                <i class="material-icons" style="font-size: 1.5vw"><a class="grey-text" onclick="addCoin('{{ r.id }}')"
+                    href="">add</a></i>
+              </div>
+            </td>
+            <td>
+              <div style="display: flex; justify-content: flex-end">
+                <i class="material-icons" style="font-size: 1.5vw"><a class="grey-text" onclick="addCoin('{{ r.id }}')"
+                    href="">delete</a></i>
+              </div>
+            </td>
+
+          </tr>
+          {% endfor %}
+          
+        </tbody>
+
       </table>
     </div>
-    {% include 'modalAddCoin.html' %}
+
     {% endfor %}
+    {% include 'modalAddCoin.html' %}
   </div>
 </body>
 
-{% endblock %}
+<script>
+  async function addCoin(cryptoId) {
+    let url_actual = window.location.pathname;
+    let idPortfolio = url_actual.split('/')[2];
 
+    await fetch(`/deleteCrypto/${idPortfolio}/${cryptoId}`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken")
+      },
+      body: {}
+    }).then((response) => {
+        console.log(response)
+
+      }).catch((error) => {
+        console.error("Error al realizar la solicitud HTTP:", error);
+        alert("Ocurrió un error al ejecutar la función.");
+      });
+      
+  }
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+</script>
+{% endblock %}

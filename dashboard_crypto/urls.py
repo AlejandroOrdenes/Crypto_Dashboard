@@ -12,6 +12,7 @@ urlpatterns = [
     path("searchOnModal/", views.searchOnModal, name="searchOnModal"),
     path("newPortfolio/", views.newPortfolio, name="newPortfolio"),
     path("deletePortfolio/<int:portfolioId>", views.deletePortfolio, name='deletePortfolio'),
-    path("createTable/<int:portfolioId>", views.createTable, name='createTable'),
-    path("addCrypto/", views.addCrypto, name='addCrypto'),
+    path("portfolio/<int:portfolioId>", views.createTable, name='createTable'),
+    path("addCrypto/<int:portfolioId>/<str:cryptoId>", views.addCrypto, name='addCrypto'),
+    path("deleteCrypto/<int:portfolioId>/<str:cryptoId>", views.deleteCrypto, name='deleteCrypto'),
 ]

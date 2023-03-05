@@ -1,33 +1,23 @@
-{% extends 'navbar.html' %} {% block content %} 
+{% extends 'navbar.html' %} {% block content %}
 
 <body style="background-color: rgb(51, 51, 51)">
-  <h6 style="color: white; text-align: center;">Dashboard</h6> 
+  <h6 style="color: white; text-align: center;">Dashboard</h6>
   <div style="margin-top: 3%; margin: 0;" class="row s3">
     <form action="/searchCrypto/" method="POST">
-        {% csrf_token %}
-        <div style="padding-left: 3%;" class="col s12">
-            <div class="input-field col s3" style="display: flex;
+      {% csrf_token %}
+      <div style="padding-left: 3%;" class="col s12">
+        <div class="input-field col s3" style="display: flex;
             width: 40%; align-items: center;">
-              <input
-                class="white-text"
-                id="search"
-                type="text"
-                name="searchCripto"
-                style="margin-right: 11%;
-                width: 40%;"
-              />
-              <label for="icon_prefix2">Search Cripto</label>
-              <button
-                class="btn waves-effect waves-light"
-                type="submit"
-                name="action"
-              >
-                Search
-              </button>
-            </div>
-            <h5 style="color: white
+          <input class="white-text" id="search" type="text" name="searchCripto" style="margin-right: 11%;
+                width: 40%;" />
+          <label for="icon_prefix2">Search Cripto</label>
+          <button class="btn waves-effect waves-light" type="submit" name="action">
+            Search
+          </button>
+        </div>
+        <h5 style="color: white
     ;">{{ error }}</h5>
-          </div>
+      </div>
     </form>
   </div>
   <div style="display: flex;
@@ -36,40 +26,40 @@
   padding-left: 4%;
   padding-right: 4%;
   justify-content: center; margin-bottom: 20%;">
-      {% for d in data %}
-        <div class="col s12 m10">
-          <a href="">
-            <div class="card shadow z-depth-5" style=" background-color: #181818;
+    {% for d in data %}
+    <div class="col s12 m10">
+      <a href="">
+        <div class="card shadow z-depth-5" style=" background-color: #181818;
               color: rgb(194, 193, 193); border-radius: 8px;">
-              <div style="display: flex; justify-content: flex-end;">
-                {% if user.is_authenticated %}
-                <span id="addCrypto" class="material-icons">add_circle</span>
-                {% else %}
-                <span style="height: 20px;"></span>
-                {% endif %}
-              </div>
-              
-              <div class="card-image" style="align-items: center;
+          <div style="display: flex; justify-content: flex-end;">
+            {% if user.is_authenticated %}
+            <span id="addCrypto" class="material-icons">add_circle</span>
+            {% else %}
+            <span style="height: 20px;"></span>
+            {% endif %}
+          </div>
+
+          <div class="card-image" style="align-items: center;
               display: flex;
               justify-content: center;">
-                <img style="width: 60%; padding: 5%;" src={{ d.image }}>
-              </div>
-              <p class="price">$ {{ d.current_price }}</p>
-              <div style="justify-content: center;
+            <img style="width: 60%; padding: 5%;" src={{ d.image }}>
+          </div>
+          <p class="price">$ {{ d.current_price }}</p>
+          <div style="justify-content: center;
               display: flex; flex-direction: column; padding-top: 5%;" class="card-content">
-                <p style="text-align: center;">{{ d.name }}</p>
- 
-              </div>
-              <div style=" background-color: #0e0e0e; border-radius: 8px;" class="card-action">
-                <span style="justify-content: center;
+            <p style="text-align: center;">{{ d.name }}</p>
+
+          </div>
+          <div style=" background-color: #0e0e0e; border-radius: 8px;" class="card-action">
+            <span style="justify-content: center;
                 display: flex; font-weight: 500;" class="card-title">{{ d.symbol.upper }}</span>
-              </div>
-            </div>
-          </a>
+          </div>
         </div>
-      
-      {% endfor %}
-      </tbody>
+      </a>
+    </div>
+
+    {% endfor %}
+    </tbody>
     </table>
   </div>
 </body>

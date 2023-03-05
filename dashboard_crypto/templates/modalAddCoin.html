@@ -34,23 +34,6 @@
           </thead>
           <tbody></tbody>
         </table>
-        <div class="modal-footer">
-          <button
-            class="modal-close btn waves-effect waves-light"
-            style="float: right; background-color: rgb(243, 40, 40)"
-            type="button"
-          >
-            Cancel
-          </button>
-          <button
-            class="btn waves-effect waves-light"
-            type="submit"
-            name="action"
-            style="margin-right: 5%"
-          >
-            Search
-          </button>
-        </div>
       </form>
     </div>
   </div>
@@ -95,15 +78,20 @@
         celdaAccion.appendChild(boton);
         tablaDeDatos.appendChild(nuevaFila);
 
+
+        var url_actual = window.location.pathname;
+        var idPortfolio = url_actual.split('/')[2];
+
+        boton.setAttribute('type', 'button')
         boton.onclick = function () {
-          fetch("/addCrypto/")
+          fetch(`/addCrypto/${idPortfolio}/${fila.id}`, {
+            method: "POST",
+            headers: {
+            "X-CSRFToken": getCookie("csrftoken")
+        }
+          })
             .then((response) => {
-              console.log(response)
-              if (response.redirected) {
-                window.location.href = response.url;
-              } else {
-                alert("Ocurrió un error al ejecutar la función.");
-              }
+              
             })
             .catch((error) => {
               console.error("Error al realizar la solicitud HTTP:", error);
@@ -115,4 +103,18 @@
     .catch((error) => {
       console.error(error);
     });
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 </script>
