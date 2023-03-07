@@ -3,6 +3,7 @@ from . import views
 
 
 urlpatterns = [
+    path("", views.dashboardCrypto, name="dashboard"),
     path("logIn/", views.logIn, name="logIn"),
     path("signIn/", views.signIn, name="signIn"),
     path("signout/", views.signout, name="signout"),
@@ -15,4 +16,5 @@ urlpatterns = [
     path("portfolio/<int:portfolioId>", views.createTable, name='createTable'),
     path("addCrypto/<int:portfolioId>/<str:cryptoId>", views.addCrypto, name='addCrypto'),
     path("deleteCrypto/<int:portfolioId>/<str:cryptoId>", views.deleteCrypto, name='deleteCrypto'),
+    path("addTransaction/<int:portfolioId>/<str:cryptoId>", views.addTransaction, name='addTransaction'),
 ]

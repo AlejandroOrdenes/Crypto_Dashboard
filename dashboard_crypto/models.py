@@ -7,7 +7,7 @@ from django.db.models import JSONField
 class Portfolio(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.TextField(blank=False, null=False, default='Portfolio')
-    cryptoIds = models.JSONField(blank=True, null=True, default=list)
+    cryptoIds = models.JSONField(blank=True, null=True)
     totalBalance = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -22,3 +22,5 @@ class Portfolio(models.Model):
         # Actualizar el campo JSON
         self.mi_campo_json = datos_json
         self.save()
+
+

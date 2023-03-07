@@ -6,10 +6,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .models import Portfolio
+from .dataAPI import getDataCrypto
 
 from django.http import JsonResponse
 
-
+cryptos = ''
 # Create your views here.
 def home(request):
     return render(request, "home.html")
@@ -67,23 +68,18 @@ def signout(request):
 
 def dashboardCrypto(request):
     if request.method == "GET":
-        # Hacemos una petición GET a la API de coingecko
-        response = requests.get(
-            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=99999999&page=1&sparkline=false"
-        )
-
-        # Si la petición fue exitosa, devolvemos los datos en formato JSON
-        if response.status_code == 200:
-            cryptos = response.json()
+        if getDataCrypto():
+            print(getDataCrypto)
+            cryptos = getDataCrypto()
             return render(request, "dashboard.html", {"data": cryptos})
         else:
             # Si la petición no fue exitosa, devolvemos un mensaje de error
             return JsonResponse(
-                {"error": "Error to get data"}, status=response.status_code
+                {"error": "Error to get data"}
             )
     else:
         # Si la petición no fue exitosa, devolvemos un mensaje de error
-        return JsonResponse({"error": "Error to get data"}, status=response.status_code)
+        return JsonResponse({"error": "Error to get data"})
 
 
 def portfolio(request):
@@ -94,7 +90,9 @@ def portfolio(request):
         print("vacio")
         return render(request, "portfolio.html", {"error": "You Dont have Portfolios!"})
     else:
-        return render(request, "portfolio.html", {"data": portafolios})
+        scroll_position = request.POST.get('scrollPosition')
+        print(scroll_position)
+        return render(request, "portfolio.html", {"data": portafolios, 'scrollPosition': scroll_position})
 
 
 def newPortfolio(request):
@@ -136,99 +134,10 @@ def getPortfolioById(portfolioId):
     portafolio = Portfolio.objects.get(id=portfolioId)
     return portafolio
 
-
-def createTable(request, portfolioId):
-    response = requests.get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=999999&page=1&sparkline=false"
-    )
-
-    portfolio = getPortafolioByUserId(request.user.id)
-    portafolio = Portfolio.objects.filter(id=portfolioId)
-    porta = Portfolio.objects.get(id=portfolioId)
-
-    print(portafolio)
-    json_string = json.dumps(porta.cryptoIds)
-    json_data = json.loads(json_string)
-    data = []
-    print(json_data)
-    if response.status_code == 200:
-        cryptos = response.json()
-        if json_data == None:
-            json_data = []
-        for d in json_data:
-            for c in cryptos:
-                if c["id"] == d:
-                    data.append(c)
-                else:
-                    continue
-        return render(
-                        request,
-                        "portfolio.html",
-                        {
-                            "portfolios": portafolio,
-                            "data": portfolio,
-                            "data2": data,
-                        },
-                    )
-    return render(
-        request,
-        "portfolio.html",
-        {"portfolios": portafolio, "data": portfolio, "data2": json_data},
-    )
-
-
-def searchOnModal(request):
-    response = requests.get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=999999&page=1&sparkline=false"
-    )
-    if response.status_code == 200:
-        cryptos = response.json()
-        return JsonResponse(cryptos, safe=False)
-    else:
-        pass
-
-
-def searchCrypto(request):
-    dataCrypto = request.POST.get("searchCripto")
-    response = requests.get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=999999&page=1&sparkline=false"
-    )
-
-    response2 = requests.get(
-        f"https://api.coingecko.com/api/v3/search?query={dataCrypto}"
-    )
-    cryptos_found = []
-    if dataCrypto == "":
-        return render(request, "dashboard.html", {"error": "Not data found!"})
-    else:
-        # Si la petición fue exitosa, devolvemos los datos en formato JSON
-        if response2.status_code == 200 and response.status_code == 200:
-            cryptos = response.json()
-            cryptos2 = response2.json()
-
-            for id in cryptos2["coins"]:
-                for id2 in cryptos:
-                    if id["symbol"].lower() == id2["symbol"].lower():
-                        cryptos_found.append(id2)
-
-            if cryptos_found == []:
-                return render(request, "dashboard.html", {"error": "Not data found!"})
-            return render(request, "dashboard.html", {"data": cryptos_found})
-
-        else:
-            # Si la petición no fue exitosa, devolvemos un mensaje de error
-            return JsonResponse(
-                {"error": "Error to get data"}, status=response.status_code
-            )
-
-
 def addCrypto(request, portfolioId, cryptoId):
     portfolio = getPortfolioById(portfolioId)
-    response = requests.get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=999999&page=1&sparkline=false"
-    )
-    if response.status_code == 200:
-        cryptos = response.json()
+    if getDataCrypto():
+        cryptos = getDataCrypto()
 
         for c in cryptos:
             if c["id"] == cryptoId:
@@ -258,8 +167,88 @@ def addCrypto(request, portfolioId, cryptoId):
                 print("ERROR AL GUARDAR CRYPTO ID")
 
     else:
-        return JsonResponse({"error": "Error to get data"}, status=response.status_code)
+        return JsonResponse({"error": "Error to get data"})
     return render(request, "dashboard.html")
+
+
+def createTable(request, portfolioId):
+
+    portfolio = getPortafolioByUserId(request.user.id)
+    portafolio = Portfolio.objects.filter(id=portfolioId)
+    porta = Portfolio.objects.get(id=portfolioId)
+
+    print(portafolio)
+    json_string = json.dumps(porta.cryptoIds)
+    json_data = json.loads(json_string)
+    data = []
+    print(json_data)
+    if getDataCrypto():
+        cryptos = getDataCrypto()
+        if json_data == None:
+            json_data = []
+        for d in json_data:
+            for c in cryptos:
+                if c["id"] == d:
+                    data.append(c)
+                else:
+                    continue
+
+        
+        return render(
+                        request,
+                        "portfolio.html",
+                        {
+                            "portfolios": portafolio,
+                            "data": portfolio,
+                            "data2": data,
+                            
+                        },
+                    )
+    return render(
+        request,
+        "portfolio.html",
+        {"portfolios": portafolio, "data": portfolio, "data2": json_data},
+    )
+
+
+def searchOnModal(request):
+    if getDataCrypto():
+        cryptos = getDataCrypto()
+        return JsonResponse(cryptos, safe=False)
+    else:
+        pass
+
+
+def searchCrypto(request):
+    dataCrypto = request.POST.get("searchCripto")
+    response2 = requests.get(
+        f"https://api.coingecko.com/api/v3/search?query={dataCrypto}"
+    )
+    cryptos_found = []
+    if dataCrypto == "":
+        return render(request, "dashboard.html", {"error": "Not data found!"})
+    else:
+        # Si la petición fue exitosa, devolvemos los datos en formato JSON
+        if response2.status_code == 200 and getDataCrypto():
+            cryptos = getDataCrypto()
+            cryptos2 = response2.json()
+
+            for id in cryptos2["coins"]:
+                for id2 in cryptos:
+                    if id["symbol"].lower() == id2["symbol"].lower():
+                        cryptos_found.append(id2)
+
+            if cryptos_found == []:
+                return render(request, "dashboard.html", {"error": "Not data found!"})
+            return render(request, "dashboard.html", {"data": cryptos_found})
+
+        else:
+            # Si la petición no fue exitosa, devolvemos un mensaje de error
+            return JsonResponse(
+                {"error": "Error to get data"})
+
+
+
 
 def deleteCrypto(request, portfolioId, cryptoId ):
     portfolio = getPortfolioById(portfolioId)
@@ -275,4 +264,8 @@ def deleteCrypto(request, portfolioId, cryptoId ):
             portfolio.deleteCoin(index)
             
     return createTable(request, portfolioId)
+
+def addTransaction(request, portfolioId, cryptoId):
+    print("Add Transaction!!")
+    pass
     

@@ -3,14 +3,14 @@
 <body style="background-color: rgb(51, 51, 51); padding-bottom: 5%;">
   <div style="padding-left: 4%; padding-right: 4%">
     <h6 style="color: white; text-align: center">Portfolio</h6>
-
+    <input type="hidden" id="scrollPosition" name="scrollPosition" value="{{ scrollPosition }}">
     <div style="
         display: flex;
         justify-content: start;
         width: 100%;
         padding-bottom: 2%;
       ">
-      <button class="waves-effect waves-light btn modal-trigger" href="#loginModal" type="submit" name="action">
+      <button class="waves-effect waves-light btn modal-trigger" href="#newPortfolioModal" type="submit" name="action">
         New Portfolio
       </button>
     </div>
@@ -50,7 +50,7 @@
             justify-content: space-between;
           ">
           <h4 style="color: white">{{ p.name }}</h4>
-          <button class="waves-effect waves-light btn modal-trigger" href="#addCoinModal" type="button" >
+          <button class="waves-effect waves-light btn modal-trigger" href="#addCoinModal" type="button">
             Add Coin
           </button>
         </div>
@@ -69,7 +69,7 @@
           {% for r in data2 %}
 
           <tr>
-            <td style="margin-right: 3%;">{{ r.market_cap_rank }}</td>
+            <td>{{ r.market_cap_rank }}</td>
             <td style="display: flex; align-items: center;"><img style="width: 12%; margin-right: 5%;"
                 src="{{ r.image }}" alt="">{{ r.symbol }}</td>
             <td>${{ r.current_price}}</td>
@@ -78,32 +78,75 @@
             <td>$0.00</td>
             <td>
               <div style="display: flex; justify-content: flex-end">
-                <i class="material-icons" style="font-size: 1.5vw"><a class="grey-text" onclick="addCoin('{{ r.id }}')"
-                    href="">add</a></i>
+                <button type="button" class="material-icons waves-effect waves-light btn modal-trigger"
+                  style="font-size: 1vw" href="#addMoneyModal">add</button>
               </div>
             </td>
             <td>
               <div style="display: flex; justify-content: flex-end">
-                <i class="material-icons" style="font-size: 1.5vw"><a class="grey-text" onclick="addCoin('{{ r.id }}')"
+                <i class="material-icons" style="font-size: 1.5vw"><a class="grey-text" onclick="deleteCoin('{{ r.id }}')"
                     href="">delete</a></i>
               </div>
             </td>
-
           </tr>
           {% endfor %}
-          
-        </tbody>
 
+        </tbody>
       </table>
     </div>
 
     {% endfor %}
     {% include 'modalAddCoin.html' %}
+    {% include 'modalInversions.html' %}
   </div>
-</body>
+  <div id="addMoneyModal" class="modal" style="width: 50%;">
+    <div class="modal-content">
+        <h4>Add Transaction</h4>
+        <div class="row" style="padding-top: 5%;">
+            <form class="col s12" action="" method="POST">
+                {% csrf_token %}
+                <div class="input-field col s6">
+                    <input placeholder="USD" id="first_name" type="text" class="validate">
+                    <label for="first_name">Price per coin</label>
+                </div>
+                <div class="input-field col s6">
+                    <input placeholder="Crypto" id="first_name" type="text" class="validate">
+                    <label for="first_name">Quantity</label>
+                </div>
+                <div class="row" style="display: flex; justify-content: right;">
+                    <button style="margin-right: 2%; background-color: indianred;" class="btn waves-effect waves-light" type="submit" name="action">
+                        Cancel
+                        <!-- <i class="material-icons right">send</i> -->
+                    </button>
+                    <button style="width: 13%" class="btn waves-effect waves-light" type="submit" name="action">
+                        Add
+                        <!-- <i class="material-icons right">send</i> -->
+                    </button>
+                </div>
+            </form>
 
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  async function addCoin(cryptoId) {
+ 
+
+  window.addEventListener('beforeunload', () => {
+    const currentPosition = window.scrollY || document.documentElement.scrollTop;
+    document.getElementById('scrollPosition').value = currentPosition;
+  });
+
+  window.onload = function () {
+    const storedPosition = document.getElementById('scrollPosition').value;
+    if (storedPosition) {
+      window.scrollTo(0, storedPosition);
+    }
+  };
+
+
+  async function deleteCoin(cryptoId) {
     let url_actual = window.location.pathname;
     let idPortfolio = url_actual.split('/')[2];
 
@@ -114,28 +157,30 @@
       },
       body: {}
     }).then((response) => {
-        console.log(response)
+      console.log(response)
 
-      }).catch((error) => {
-        console.error("Error al realizar la solicitud HTTP:", error);
-        alert("Ocurrió un error al ejecutar la función.");
-      });
-      
+    }).catch((error) => {
+      console.error("Error al realizar la solicitud HTTP:", error);
+      alert("Ocurrió un error al ejecutar la función.");
+    });
+
   }
   function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
         }
+      }
     }
     return cookieValue;
-}
+  }
+
+
 
 </script>
 {% endblock %}
